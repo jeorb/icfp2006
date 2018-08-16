@@ -2,8 +2,12 @@ use std::io;
 use std::env;
 use std::io::prelude::*;
 use std::fs::File;
+use std::time::SystemTime;
+
+const MAX: u64 = 1 << 32;
 
 fn main() -> io::Result<()> {
+    let start_time = SystemTime::now();
     let mut filename = "sandmark.umz".to_owned();
     
     let args: Vec<String> = env::args().collect();
@@ -41,7 +45,6 @@ fn main() -> io::Result<()> {
     
     println!("First platter {} {:032b} {} {}", arrays[0][0], arrays[0][0], arrays.len(), arrays[0].len());
 
-    let mut cycles = 0;
     let mut finger = 0;
     while finger < arrays[0].len() {
         let platter = arrays[0][finger];
@@ -49,7 +52,6 @@ fn main() -> io::Result<()> {
         let a = (platter >> 6 & 0b111) as usize;
         let b = (platter >> 3 & 0b111) as usize;
         let c = (platter & 0b111) as usize;
-        //println!("{} Operator {} {:04b} - {} {} {} {:032b}", finger, operator, operator, a, b, c, platter);
         match operator {
             0 => {
                 //println!("Conditional Move");
@@ -67,11 +69,11 @@ fn main() -> io::Result<()> {
             },
             3 => {
                 //println!("Addition");
-                registers[a] = registers[b] + registers[c];
+                registers[a] = ((registers[b] as u64) + (registers[c] as u64) % MAX) as u32;
             },
             4 => {
                 //println!("Multiplication");
-                registers[a] = ((registers[b] as u64 * registers[c] as u64) % 2u64.pow(32)) as u32;
+                registers[a] = ((registers[b] as u64 * registers[c] as u64) % MAX) as u32;
             },
             5 => {
                 //println!("Division");
@@ -87,16 +89,15 @@ fn main() -> io::Result<()> {
             },
             8 => {
                 //println!("Allocation");
-                arrays.push(vec![0, registers[c]]);
-                registers[a] = (arrays.len()-1) as u32;
+                arrays.push(vec![0; registers[c] as usize]);
+                registers[b] = (arrays.len()-1) as u32;
             },
             9 => {
                 //println!("Abandonment");
-                arrays[registers[c] as usize] = vec![0];
+                arrays[registers[c] as usize] = vec![];
             },
             10 => {
-                //println!("Output");
-                //println!("-------------------- {} - {}", registers[c] as u8 as char, registers[c]);
+                //println!("Output -------------------- {} - {}", registers[c] as u8 as char, registers[c]);
                 print!("{}", registers[c] as u8 as char);
             },
             11 => {
@@ -110,14 +111,16 @@ fn main() -> io::Result<()> {
             },
             12 => {
                 //println!("Load Program");
-                arrays[0] = arrays[registers[b] as usize].to_vec();
-                finger = registers[c] as usize - 1;
+                if registers[b] > 0 {
+                    arrays[0] = arrays[registers[b] as usize].to_vec();
+                }
+                finger = registers[c] as usize;
+                continue;
             },
             13 => {
                 //println!("Orthography");
                 let a = ((platter >> 25) & 0b111) as usize;
                 registers[a] = platter & 0b11111111_11111111_11111111_1;
-                //println!("Orthography {} {}", a, registers[a]);
             },
             _ => {
                 println!("Whoops!!");
@@ -126,11 +129,8 @@ fn main() -> io::Result<()> {
             
         }
         finger+=1;
-        cycles+=1;
-        //if finger  > 200 || cycles > 200 {
-        //    break;
-        //}
     }
 
+    println!("Completed processing in {} seconds.", start_time.elapsed().unwrap().as_secs());
     Ok(())
 }
