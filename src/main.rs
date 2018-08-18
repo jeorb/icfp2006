@@ -8,14 +8,24 @@ const MAX: u64 = 1 << 32;
 
 fn main() -> io::Result<()> {
     let start_time = SystemTime::now();
-    let mut filename = "sandmark.umz".to_owned();
+    let mut scoll_file = "sandmark.umz".to_owned();
+    let mut is_dump = false;
+    let mut dump_file = "".to_owned();
+    let mut dump:File = File::create("/dev/null")?;
     
     let args: Vec<String> = env::args().collect();
     if args.len() > 1 {
-        filename = args[1].clone();
+        scoll_file = args[1].clone();
     }
-    println!("Loading program scroll {}", filename);
-    let mut f = File::open(filename)?;
+    println!("Loading program scroll {}", scoll_file);
+    let mut f = File::open(scoll_file)?;
+
+    if args.len() > 2 {
+        dump_file = args[2].clone();
+        is_dump = true;
+        println!("A copy of UM output will be written to {}", dump_file);
+        dump = File::create(dump_file)?;
+    }
     
     let mut scroll = vec![0; 0];
     f.read_to_end(&mut scroll)?;
@@ -24,7 +34,6 @@ fn main() -> io::Result<()> {
     
     println!("First platter {:?} {:08b} {:08b} {:08b} {:08b}", &scroll[0..4], scroll[0], scroll[1], scroll[2], scroll[3]);
     
-    //let mut platters = vec![0; 0
     let mut arrays: Vec<Vec<u32>> = Vec::new();
     let mut registers: [u32; 8] = [0; 8];
     let mut a0: Vec<u32> = Vec::new();
@@ -99,6 +108,9 @@ fn main() -> io::Result<()> {
             10 => {
                 //println!("Output -------------------- {} - {}", registers[c] as u8 as char, registers[c]);
                 print!("{}", registers[c] as u8 as char);
+                if is_dump {
+                    dump.write(&[registers[c] as u8]).unwrap();
+                }
             },
             11 => {
                 //println!("Input");
@@ -132,5 +144,8 @@ fn main() -> io::Result<()> {
     }
 
     println!("Completed processing in {} seconds.", start_time.elapsed().unwrap().as_secs());
+    if is_dump {
+        dump.flush().unwrap();
+    }
     Ok(())
 }
