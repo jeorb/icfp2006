@@ -8,6 +8,7 @@ http://www.boundvariable.org/task.shtml
 ## Progress:
 
 ### 2018-08-18 - Decrypted codex and ran UMIX
+```
 12:00:00 1/1/19100
 Welcome to Universal Machine IX (UMIX).
 
@@ -16,6 +17,7 @@ in to multiple simultaneous UMIX servers. No game playing
 is allowed.
 
 Please log in (use 'guest' for visitor access).
+```
 
 
 ### 2018-08-15 - Sandmark makes it to the end in 19 seconds.

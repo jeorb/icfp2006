@@ -108,6 +108,7 @@ fn main() -> io::Result<()> {
             10 => {
                 //println!("Output -------------------- {} - {}", registers[c] as u8 as char, registers[c]);
                 print!("{}", registers[c] as u8 as char);
+                io::stdout().flush().unwrap();
                 if is_dump {
                     dump.write(&[registers[c] as u8]).unwrap();
                 }
@@ -115,11 +116,8 @@ fn main() -> io::Result<()> {
             11 => {
                 //println!("Input");
                 let input: u8 = io::stdin().bytes().next().and_then(|result| result.ok()).unwrap();
-                if input == '\n' as u8 {
-                    registers[c] = !0;
-                } else {
-                  registers[c] = input as u32;
-                }
+                registers[c] = input as u32;
+                //}
             },
             12 => {
                 //println!("Load Program");
