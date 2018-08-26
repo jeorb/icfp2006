@@ -1,0 +1,19 @@
+<!docktype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>UM</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div>
+        <button class="um-stop" onclick="UM.Stop();">Stop</button>
+        <button class="um-resume" onclick="UM.Resume();">Resume</button>
+        <button class="um-load" onclick="UM.Load('sandmark.umz');">Load Sandmark</button>
+        <button class="um-load" onclick="UM.Load('codex.umz');">Load Codex</button>
+        <button class="um-load" onclick="UM.Load('umix.umz');">Load UMIX</button>
+    </div>
+    <div id="um-console" contenteditable="true" class="console">Virtual UM Console</div>
+    <script src="um.js"></script>
+</body>
+</html>

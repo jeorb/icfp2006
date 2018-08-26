@@ -37,6 +37,7 @@ fn main() -> io::Result<()> {
     let mut arrays: Vec<Vec<u32>> = Vec::new();
     let mut registers: [u32; 8] = [0; 8];
     let mut a0: Vec<u32> = Vec::new();
+    let mut pointers: Vec<usize> = Vec::new();
     
     let len = scroll.len();
     let mut i = 0;
@@ -98,12 +99,20 @@ fn main() -> io::Result<()> {
             },
             8 => {
                 //println!("Allocation");
-                arrays.push(vec![0; registers[c] as usize]);
-                registers[b] = (arrays.len()-1) as u32;
+                let new_array = vec![0; registers[c] as usize];
+                if pointers.len() > 0 {
+                    let new_index = pointers.pop().unwrap();
+                    arrays[new_index] = vec![0; registers[c] as usize];
+                    registers[b] = new_index as u32;
+                } else {
+                    arrays.push(new_array);
+                    registers[b] = (arrays.len()-1) as u32;
+                }
             },
             9 => {
                 //println!("Abandonment");
-                arrays[registers[c] as usize] = vec![];
+                //arrays[registers[c] as usize] = vec![];
+                pointers.push(registers[c] as usize);
             },
             10 => {
                 //println!("Output -------------------- {} - {}", registers[c] as u8 as char, registers[c]);
@@ -117,7 +126,6 @@ fn main() -> io::Result<()> {
                 //println!("Input");
                 let input: u8 = io::stdin().bytes().next().and_then(|result| result.ok()).unwrap();
                 registers[c] = input as u32;
-                //}
             },
             12 => {
                 //println!("Load Program");

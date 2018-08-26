@@ -1,0 +1,27 @@
+body {
+    color: #fff;
+    background-color: #000;
+    font-family: monospace;
+    margin: 0;
+    padding: 0;
+}
+
+.console {
+    white-space: pre-wrap;
+    box-sizing: border-box;
+    padding: 1em;
+    width: 100vw;
+    height: 90vh;
+    overflow: scroll;
+}
+
+.console p {
+    white-space: pre-wrap;
+    padding: 0;
+    margin: 0;
+    border: none;
+}
+
+.user-input {
+    color: #00ff00;
+}
