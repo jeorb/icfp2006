@@ -8,7 +8,7 @@ http://www.boundvariable.org/task.shtml
 ## Progress:
 
 ### 2018-08-26 - Created JavaScript version of the UM
-[JavaScript UM](../web/)
+[Live demo.](https://jeorb.github.io/icfp2006/web/)
 
 ![Screenshot](https://jeorb.github.io/icfp2006/web/screenshot.png "Screenshot of JavaScript UM")
 
