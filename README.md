@@ -7,6 +7,12 @@ http://www.boundvariable.org/task.shtml
 
 ## Progress:
 
+### 2018-08-26 - Created JavaScript version of the UM
+[JavaScript UM](../web/)
+
+![Screenshot](https://github.com/jeorb/icfp2006/web/screenshot.png "Screenshot of JavaScript UM")
+
+
 ### 2018-08-18 - Decrypted codex and ran UMIX
 ```
 12:00:00 1/1/19100
