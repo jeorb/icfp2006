@@ -4,15 +4,62 @@ body {
     font-family: monospace;
     margin: 0;
     padding: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.column-left, .column-right {
+    padding-top: 1em;
+    padding-bottom: 1em;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}
+.column-left {
+    border-right: 4px solid #443300;
+    resize: horizontal;
+    flex-grow: 3;
+}
+
+.column-right {
+    flex-grow: 1;
+    border-left: 4px solid #443300;
+    min-width: 2em;
+}
+#history-form {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.column-right .history {
+    flex: 1;
+}
+
+
+header {
+    text-align: center;
+}
+footer {
+    width: 100%;
+}
+footer form {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+footer #text-input {
+    flex: 1;
 }
 
 .console {
     white-space: pre-wrap;
     box-sizing: border-box;
     padding: 1em;
-    width: 100vw;
-    height: 90vh;
+    width: 100%;
     overflow: scroll;
+    flex:1;
 }
 
 .console p {
@@ -25,3 +72,5 @@ body {
 .user-input {
     color: #00ff00;
 }
+
+

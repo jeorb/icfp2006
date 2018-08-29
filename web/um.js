@@ -1,6 +1,12 @@
 var UM = function(){
     
     var um_console;
+    var enter_button;
+    var text_input;
+    var input_form;
+    var history_form;
+    var history;
+    var copy_button;
     var data;
     var current_line;
     var finger = 0;
@@ -16,7 +22,7 @@ var UM = function(){
     var key_buffer = [];
     
     function BufferChar(ch){
-        if(ch==0){
+        if(ch==0 || ch==13){
             ch = 10;
         }
         key_buffer.push(ch);
@@ -34,6 +40,11 @@ var UM = function(){
 
     function Init(id){
         um_console = document.getElementById(id);
+        enter_button = document.getElementById('enter-button');
+        text_input = document.getElementById('text-input');
+        input_form = document.getElementById('input-form');
+        history_form = document.getElementById('history-form');
+        history = document.getElementById('history');
         um_console.textContent = '';
         current_line = document.createElement('p');
         um_console.appendChild(current_line);
@@ -51,6 +62,21 @@ var UM = function(){
             console.log(e);
             BufferString((e.clipboardData || window.clipboardData).getData('text'));
         });
+        input_form.addEventListener('submit', function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            var text = text_input.value;
+            BufferString(text+'\n');
+            text_input.value = ''; 
+            var option = document.createElement('option');
+            option.textContent = text;
+            history.appendChild(option);
+        }, false);
+        history_form.addEventListener('submit', function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            text_input.value = history.value;
+        }, false);
     }
     
     function Stop(){

@@ -6,14 +6,30 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div>
-        <button class="um-stop" onclick="UM.Stop();">Stop</button>
-        <button class="um-resume" onclick="UM.Resume();">Resume</button>
-        <button class="um-load" onclick="UM.Load('sandmark.umz');">Load Sandmark</button>
-        <button class="um-load" onclick="UM.Load('codex.umz');">Load Codex</button>
-        <button class="um-load" onclick="UM.Load('umix.umz');">Load UMIX</button>
+    <div class="column-left">
+        <header>
+            <button onclick="UM.Stop();">Stop</button>
+            <button onclick="UM.Resume();">Resume</button>
+            <button onclick="UM.Load('sandmark.umz');">Load Sandmark</button>
+            <button onclick="UM.Load('codex.umz');">Load Codex</button>
+            <button onclick="UM.Load('umix.umz');">Load UMIX</button>
+        </header>
+        <div id="um-console" contenteditable="true" class="console" role="main">Virtual UM Console</div>
+        <footer>
+            <form id="input-form">
+                <input type="text" id="text-input" />
+                <input type="submit" class="enter-button" value="Enter ⏎" >
+            </form>
+        </footer>
     </div>
-    <div id="um-console" contenteditable="true" class="console">Virtual UM Console</div>
+    <div class="column-right">
+        <form id="history-form">
+            <select class="history" name="history" id="history" multiple>
+                <option>(\b.bb)(\v.vv)06FHPVboundvarHRAk</option>
+            </select>
+            <input type="submit" class="copy-button" id="copy-button" value="⇦ Copy to Buffer">
+        </form>
+    </div>
     <script src="um.js"></script>
 </body>
 </html>
